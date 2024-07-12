@@ -38,7 +38,40 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-    <input type="text" id="username" name="username" placeholder="Enter your username">
+    <h2>User Registration Form</h2>
+    <form id="userForm" action="/api/users" method="POST">
+      <label for="userid">User ID:</label>
+      <input type="text" id="userid" name="userid"><br><br>
+      <button type="submit">Register</button>
+    </form>
 
+    <script>
+      document.getElementById('userForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const userid = document.getElementById('userid').value;
+
+        try {
+          const response = await fetch('/api/users', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ userid})
+          });
+
+          if (response.ok) {
+            alert('성공!');
+            document.getElementById('userid').value = '';
+            document.getElementById('nickname').value = '';
+          } else {
+            throw new Error('실패');
+          }
+        } catch (error) {
+          console.error('실패:', error);
+          alert('실패');
+        }
+      });
+    </script>
   </body>
 </html>
